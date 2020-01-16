@@ -1,0 +1,10 @@
+JfX/9q.W:bnm78tAl:HUCefqhBgFrbD3
+
+
+https://www.koskila.net/how-to-get-current-user-in-asp-net-core/
+
+
+https://docs.microsoft.com/en-us/aspnet/core/signalr/scale?view=aspnetcore-3.1
+https://medium.com/@berkokur/a-real-life-scenario-implementation-with-angular-8-and-asp-net-core-signalr-3ad7e5a46fca
+https://www.c-sharpcorner.com/article/real-time-angular-8-application-with-signalr-and-cosmos-db/
+https://docs.microsoft.com/en-us/aspnet/core/tutorials/signalr-typescript-webpack?view=aspnetcore-3.1&tabs=visual-studio
