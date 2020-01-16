@@ -42,6 +42,7 @@ namespace Hermes
             services.AddControllersWithViews();
             services.AddRazorPages();
 
+
             services.AddAuthentication().AddMicrosoftAccount(microsoftOptions =>
             {
                 microsoftOptions.ClientId = Configuration["Authentication:Microsoft:ClientId"];
@@ -72,7 +73,7 @@ namespace Hermes
 
             app.UseHttpsRedirection();
             app.UseStaticFiles();
-            app.UseDefaultFiles();
+            //app.UseDefaultFiles();
             if (!env.IsDevelopment())
             {
                 app.UseSpaStaticFiles();
@@ -88,7 +89,7 @@ namespace Hermes
                 endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller}/{action=Index}/{id?}");
-                app.UseEndpoints(endpoints => { endpoints.MapHub<ChatHub>("/hub"); });
+                //endpoints.MapHub<ChatHub>("/hub");
                 endpoints.MapRazorPages();
             });
 

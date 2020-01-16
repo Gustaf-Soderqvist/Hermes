@@ -8,5 +8,6 @@ namespace Hermes.Models
 {
     public class ApplicationUser : IdentityUser
     {
+        public IEnumerable<Comment> Comments { get; set; }
     }
 }

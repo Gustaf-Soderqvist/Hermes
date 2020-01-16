@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthorizeService } from "../../api-authorization/authorize.service";
 
-import * as signalR from "@microsoft/signalr";
+//import * as signalR from "@microsoft/signalr";
 
 @Component({
   selector: 'app-home',
@@ -19,21 +19,21 @@ export class HomeComponent implements OnInit {
   // .build();
 
   ngOnInit() {
-    this.authorizeService.getUser().subscribe(x => {
-      this.test = x;
-    });
+    //this.authorizeService.getUser().subscribe(x => {
+    //  this.test = x;
+    //});
 
-    const connection = new signalR.HubConnectionBuilder()
-      .configureLogging(signalR.LogLevel.Information)
-      .withUrl("/hub")
-      .build();
+    //const connection = new signalR.HubConnectionBuilder()
+    //  .configureLogging(signalR.LogLevel.Information)
+    //  .withUrl("/hub")
+    //  .build();
 
-    connection.start().then(() => {
-      console.log('SignalR Connected!');
-    }).catch(err => console.error(err.toString()));
+    //connection.start().then(() => {
+    //  console.log('SignalR Connected!');
+    //}).catch(err => console.error(err.toString()));
 
-    connection.on("BroadcastMessage", () => {
+    //connection.on("BroadcastMessage", () => {
 
-    }); 
+    //}); 
   }
 }
