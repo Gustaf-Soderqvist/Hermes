@@ -8,7 +8,7 @@ import { AuthorizeService } from "../../api-authorization/authorize.service";
   templateUrl: './home.component.html',
 })
 export class HomeComponent implements OnInit {
-  test: any;
+  user: any;
 
   constructor(private authorizeService: AuthorizeService, ) {
 
@@ -19,9 +19,9 @@ export class HomeComponent implements OnInit {
   // .build();
 
   ngOnInit() {
-    //this.authorizeService.getUser().subscribe(x => {
-    //  this.test = x;
-    //});
+    this.authorizeService.getUser().subscribe(u => {
+      this.user = u;
+    });
 
     //const connection = new signalR.HubConnectionBuilder()
     //  .configureLogging(signalR.LogLevel.Information)

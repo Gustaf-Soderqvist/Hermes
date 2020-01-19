@@ -8,9 +8,17 @@ namespace Hermes
 {
     public class ChatHub : Hub
     {
-        public async Task NewMessage(string username, string message)
-        {
-            await Clients.All.SendAsync("messageReceived", username, message);
-        }
+
+    }
+    
+    public interface IHubClient
+    {
+        Task BroadcastMessage();
+        Task BroadcastLike();
+        Task BroadcastUpdate();
+        Task BroadcastDelete();
+    }
+    public class BroadcastHub : Hub<IHubClient>
+    {
     }
 }

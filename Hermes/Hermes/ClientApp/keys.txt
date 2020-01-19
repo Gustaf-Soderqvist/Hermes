@@ -8,8 +8,9 @@ https://docs.microsoft.com/en-us/aspnet/core/signalr/scale?view=aspnetcore-3.1
 https://medium.com/@berkokur/a-real-life-scenario-implementation-with-angular-8-and-asp-net-core-signalr-3ad7e5a46fca
 https://www.c-sharpcorner.com/article/real-time-angular-8-application-with-signalr-and-cosmos-db/
 https://docs.microsoft.com/en-us/aspnet/core/tutorials/signalr-typescript-webpack?view=aspnetcore-3.1&tabs=visual-studio
-
-
+https://medium.com/@tocalai/create-signalr-on-asp-net-core-df7ac8a9e4ee
+https://medium.com/@pielegacy/giving-the-valuescontroller-superpowers-with-signalr-core-7d4ff2be9e1c
+https://codeopinion.com/practical-asp-net-core-signalr-server-hubs/
 dotnet user-secrets set Authentication:Microsoft:ClientId "6a4509e3-7124-4341-97ae-8a2113cd782d" --project "D:\Github\Hermes\Hermes\Hermes"
 dotnet user-secrets set Authentication:Microsoft:ClientId "6a4509e3-7124-4341-97ae-8a2113cd782d" --project "D:\Github\Hermes\Hermes\Hermes"
 dotnet user-secrets set Authentication:Microsoft:ClientSecret "JfX/9q.W:bnm78tAl:HUCefqhBgFrbD3" --project "D:\Github\Hermes\Hermes\Hermes"

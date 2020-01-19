@@ -8,9 +8,14 @@ using Microsoft.AspNetCore.SpaServices.AngularCli;
 using Microsoft.EntityFrameworkCore;
 using Hermes.Data;
 using Hermes.Models;
+using Hermes.Repositories;
+using Hermes.Repositories.Interfaces;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Serialization;
 
 namespace Hermes
 {
@@ -33,6 +38,8 @@ namespace Hermes
             services.AddDefaultIdentity<ApplicationUser>()
                 .AddEntityFrameworkStores<ApplicationDbContext>();
 
+            services.AddSignalR();
+
             services.AddIdentityServer()
                 .AddApiAuthorization<ApplicationUser, ApplicationDbContext>();
 
@@ -42,6 +49,27 @@ namespace Hermes
             services.AddControllersWithViews();
             services.AddRazorPages();
 
+            // Repositories
+            services.AddScoped(typeof(IDataRepository<>), typeof(DataRepository<>));
+
+
+            services.Configure<IdentityOptions>(options =>
+            {
+                options.User.RequireUniqueEmail = true;
+
+                //Optional settings - if change is needed 
+                //// Password settings.
+                //options.Password.RequireDigit = true;
+                //options.Password.RequireLowercase = true;
+                //options.Password.RequireNonAlphanumeric = true;
+                //options.Password.RequireUppercase = true;
+                //options.Password.RequiredLength = 6;
+                //options.Password.RequiredUniqueChars = 1;
+
+                //// User settings.
+                //options.User.AllowedUserNameCharacters =
+                //    "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-._@+";
+            });
 
             services.AddAuthentication().AddMicrosoftAccount(microsoftOptions =>
             {
@@ -54,6 +82,19 @@ namespace Hermes
             {
                 configuration.RootPath = "ClientApp/dist";
             });
+
+            // Add cors
+            services.AddCors();
+
+            services.AddControllers()
+                .AddNewtonsoftJson(options =>
+                {
+                    //options.SerializerSettings.ContractResolver = new DefaultContractResolver();
+                    options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
+                });
+
+            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -86,12 +127,19 @@ namespace Hermes
             app.UseAuthorization();
             app.UseEndpoints(endpoints =>
             {
+                endpoints.MapHub<ChatHub>("/hub");
+                endpoints.MapHub<BroadcastHub>("/notify");
                 endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller}/{action=Index}/{id?}");
-                //endpoints.MapHub<ChatHub>("/hub");
                 endpoints.MapRazorPages();
             });
+
+            app.UseCors(builder => builder
+                .AllowAnyOrigin()
+                .AllowAnyHeader()
+                .AllowAnyMethod());
+            app.UseRouting();
 
             app.UseSpa(spa =>
             {
