@@ -2,8 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { AuthorizeService } from "../../api-authorization/authorize.service";
 import * as signalR from "@microsoft/signalr";
 import { GuestbookService } from '../service/guestbook.service';
-import { Observable } from 'rxjs';
-import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms';
+
+import { FormGroup, FormControl, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-guestbook',
@@ -12,9 +12,8 @@ import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms'
 })
 export class GuestbookComponent implements OnInit {
   user: any;
-  restaurants$: Observable<any[]>;
-  comments: any;
-
+  comments: any[];
+  noteToUpdate: string;
   commentForm = new FormGroup({
     content: new FormControl('', [Validators.required]),
   });
@@ -23,6 +22,7 @@ export class GuestbookComponent implements OnInit {
 
   }
   ngOnInit() {
+    this.noteToUpdate = "";
     //Load comments
     this.loadComments();
 
@@ -33,7 +33,7 @@ export class GuestbookComponent implements OnInit {
 
     const connection = new signalR.HubConnectionBuilder()
       .configureLogging(signalR.LogLevel.Information)
-      .withUrl("https://localhost:44355/notify")
+      .withUrl("notify")
       .build();
 
     connection.start().then(() => {
@@ -46,6 +46,12 @@ export class GuestbookComponent implements OnInit {
     connection.on("BroadcastLike", () => {
       this.loadComments();
     });
+    connection.on("BroadcastUpdate", () => {
+      this.loadComments();
+    });
+    connection.on("BroadcastDelete", () => {
+      this.loadComments();
+    });
 
   }
 
@@ -55,20 +61,7 @@ export class GuestbookComponent implements OnInit {
     });
   }
 
-  //Remove this later
-  addComment() {
-
-    let note = {
-      note: "test test test",
-      createdDate: new Date(),
-      userId: this.user.sub,
-    }
-    this.guestbookService.postComment(note).subscribe(r => {
-      console.log("Comment added");
-    });
-    console.log("test");
-  }
-
+  //Post comment
   onSubmit() {
     if (!this.commentForm.valid) {
       return;
@@ -87,17 +80,56 @@ export class GuestbookComponent implements OnInit {
     });
   }
 
+  //Reset commetForm
   revert() {
     this.commentForm.reset();
   }
 
-  postLike(commentId: number) {
-    let like = {
+  postLike(commentId: number, likes: any[]) {
+    var id = undefined;
+    if (likes.length > 0) {
+      //check if user has already liked the post
+      var like = likes.find(l => l.commentId === commentId && l.userId === this.user.sub);
+      if (like !== undefined) {
+        id = like.id;
+      }
+    }
+    let data = {
+      id: id,
       commentId: commentId,
       userId: this.user.sub,
     };
-    this.guestbookService.postLike(like).subscribe(r => {
+    this.guestbookService.postLike(data).subscribe(r => {
       console.log("Like added");
     });
+  }
+
+  deleteComment(modal: any, comment: any) {
+    this.guestbookService.deleteComment(comment.id).subscribe(c => {
+      console.log("Comment deleted");
+      modal.hide();
+    });
+  }
+
+  toggleUpdateCommentModal(modal: any, comment: any, open: boolean) {
+    this.noteToUpdate = comment.note;
+    if (open) {
+      modal.show();
+    } else {
+      modal.hide();
+    }
+  }
+
+  updateComment(modal: any, comment: any) {
+    comment.note = this.noteToUpdate;
+    this.guestbookService.updateComment(comment.id, comment).subscribe(c => {
+      console.log("comment updated");
+      modal.hide();
+    });
+  }
+
+  userHasLiked(comment: any) {
+    console.log("comment");
+    return true;
   }
 }

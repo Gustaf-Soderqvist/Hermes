@@ -16,7 +16,7 @@ namespace Hermes.Models
         public string UserId { get; set; }
         public ApplicationUser User { get; set; }
         public string UserName { get; set; }
-        [JsonProperty("Likes")]
+        //[JsonProperty("Likes")]
         public IEnumerable<Like> Likes { get; set; }
     }
 }

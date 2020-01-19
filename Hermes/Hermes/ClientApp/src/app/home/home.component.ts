@@ -14,26 +14,9 @@ export class HomeComponent implements OnInit {
 
   }
 
-  //this.hubConnection = new signalR.HubConnectionBuilder()
-  // .withUrl("/hub")
-  // .build();
-
   ngOnInit() {
     this.authorizeService.getUser().subscribe(u => {
       this.user = u;
     });
-
-    //const connection = new signalR.HubConnectionBuilder()
-    //  .configureLogging(signalR.LogLevel.Information)
-    //  .withUrl("/hub")
-    //  .build();
-
-    //connection.start().then(() => {
-    //  console.log('SignalR Connected!');
-    //}).catch(err => console.error(err.toString()));
-
-    //connection.on("BroadcastMessage", () => {
-
-    //}); 
   }
 }

@@ -5,12 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.SignalR;
 
 namespace Hermes
-{
-    public class ChatHub : Hub
-    {
-
-    }
-    
+{  
     public interface IHubClient
     {
         Task BroadcastMessage();

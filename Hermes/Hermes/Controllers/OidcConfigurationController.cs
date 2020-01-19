@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 
-namespace Test.Controllers
+namespace Hermes.Controllers
 {
     public class OidcConfigurationController : Controller
     {

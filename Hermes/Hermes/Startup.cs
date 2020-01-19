@@ -46,6 +46,7 @@ namespace Hermes
             services.AddAuthentication()
                 .AddIdentityServerJwt();
                 //.AddMicrosoftAccount();
+
             services.AddControllersWithViews();
             services.AddRazorPages();
 
@@ -127,7 +128,6 @@ namespace Hermes
             app.UseAuthorization();
             app.UseEndpoints(endpoints =>
             {
-                endpoints.MapHub<ChatHub>("/hub");
                 endpoints.MapHub<BroadcastHub>("/notify");
                 endpoints.MapControllerRoute(
                     name: "default",

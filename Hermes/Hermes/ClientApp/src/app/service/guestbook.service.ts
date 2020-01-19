@@ -45,6 +45,23 @@ export class GuestbookService {
       );
   }
 
+  deleteComment(id: number): Observable<any> {
+    return this.http.delete<any>(this.baseurlComment + '/' + id, this.httpOptions)
+      .pipe(
+        retry(1),
+        catchError(this.errorHandl)
+      );
+  }
+
+
+  updateComment(id: number, comment): Observable<any> {
+    return this.http.put<any>(this.baseurlComment + '/' + id, JSON.stringify(comment), this.httpOptions)
+      .pipe(
+        retry(1),
+        catchError(this.errorHandl)
+      );
+  }
+
   // Error handling
   errorHandl(error) {
     let errorMessage = '';

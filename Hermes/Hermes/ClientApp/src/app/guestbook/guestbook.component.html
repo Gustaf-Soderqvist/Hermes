@@ -1,34 +1,31 @@
 <div class="container bg-faded py-3">
   <h2 class="h2-responsive mb-5 text-center">Guestbook</h2>
   <div class="">
-    <div class="container-fluid ">
-      <form [formGroup]="commentForm" (ngSubmit)="onSubmit()">
-        <div class="form-row">
-          <div class="col-12">
-            <div class="md-form">
-              <mdb-icon fas icon="pencil-alt" class="prefix"></mdb-icon>
-              <textarea id="content"
-                        class="md-textarea form-control"
-                        aria-label="With textarea"
-                        placeholder="Comment.."
-                        formControlName="content"
-                        required
-                        [ngClass]="{ 'is-invalid': commentForm.get('content').invalid && (content?.dirty) }"></textarea>
-              <div class="alert alert-danger" *ngIf="commentForm.get('content').invalid && (content?.dirty)">
-                content is required.
-              </div>
+    <form [formGroup]="commentForm" (ngSubmit)="onSubmit()">
+      <div class="form-row">
+        <div class="col-12">
+          <div class="md-form">
+            <mdb-icon fas icon="pencil-alt" class="prefix"></mdb-icon>
+            <textarea id="content"
+                      class="md-textarea form-control"
+                      aria-label="With textarea"
+                      placeholder="Comment.."
+                      formControlName="content"
+                      required
+                      [ngClass]="{ 'is-invalid': commentForm.get('content').invalid && (content?.dirty) }"></textarea>
+            <div class="alert alert-danger" *ngIf="commentForm.get('content').invalid && (content?.dirty)">
+              content is required.
             </div>
           </div>
         </div>
-        <div>
-          <button mdbBtn color="info" block="true" type="submit" [disabled]="!commentForm.valid">Post</button>
-        </div>
-      </form>
-      <div class="clearfix"></div>
-      <hr>
-    </div>
+      </div>
+      <div>
+        <button mdbBtn color="info" block="true" type="submit" [disabled]="!commentForm.valid">Post</button>
+      </div>
+    </form>
+    <div class="clearfix"></div>
+    <hr>
   </div>
-
   <div *ngFor="let comment of comments">
     <div class="clearfix"></div>
     <br />
@@ -38,24 +35,74 @@
           <div class="card-body">
             <h5 class="card-title">{{comment.userName}}</h5>
             <p class="card-text"><small class="text-muted">{{comment.createdDate | date:'yyyy-MM-dd HH:mm:ss'}}</small></p>
-            <p class="card-text">{{comment.note}}</p>
-            <!-- Feed footer -->
-            <div class="feed-footer">
-              <a class="like" (click)="postLike(comment.id)">
+            <p class="card-text text-justify text-break">{{comment.note}}</p>
+            <br />
+            <div>
+              <a class="like" (click)="postLike(comment.id, comment.likes)" [ngClass]="{'red-text': comment.likes.length > 0}" >
                 <mdb-icon fas icon="heart"></mdb-icon>
-                <span> {{comment.Likes.length}} </span>
+                <span> {{comment.likes.length}} </span>
               </a>
               <div class="float-right" *ngIf="comment.userId === user.sub">
-                <a class="">
+                <a (click)="deleteCommentModal.show()">
                   <span class="red-text"><mdb-icon fas icon="trash-alt"></mdb-icon></span>
                 </a>
                 <div class="clearfix"></div>
-
-                <a class="">
+                <a (click)="toggleUpdateCommentModal(UpdateCommentModal, comment, true)">
                   <span class="green-text"><mdb-icon fas icon="edit"></mdb-icon></span>
                 </a>
               </div>
             </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!--Modal delete comment-->
+    <div mdbModal #deleteCommentModal="mdbModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="deleteCommentModal" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close pull-right" aria-label="Close" (click)="deleteCommentModal.hide()">
+              <span aria-hidden="true">×</span>
+            </button>
+            <h4 class="modal-title w-100" id="myModalLabel">Delete comment</h4>
+          </div>
+          <div class="modal-body">
+            Are you sure you want to delete comment?
+          </div>
+          <div class="modal-footer">
+            <button type="button" mdbBtn color="secondary" class="waves-light" aria-label="Close" (click)="deleteCommentModal.hide()" mdbWavesEffect>Close</button>
+            <button type="button" mdbBtn color="danger" class="relative waves-light" (click)="deleteComment(deleteCommentModal, comment)" mdbWavesEffect>Delete</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!--Modal update comment-->
+    <div mdbModal #UpdateCommentModal="mdbModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="UpdateCommentModal" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close pull-right" aria-label="Close" (click)="UpdateCommentModal.hide()">
+              <span aria-hidden="true">×</span>
+            </button>
+            <h4 class="modal-title w-100" id="myModalLabel">Update comment</h4>
+          </div>
+          <div class="modal-body">
+            <div class="md-form">
+              <mdb-icon fas icon="pencil-alt" class="prefix"></mdb-icon>
+              <textarea type=
+                        "text"
+                        id="formUpdateComment"
+                        class="md-textarea form-control"
+                        [(ngModel)]="noteToUpdate"
+                        mdbInput
+                        required=""></textarea>
+              <label for="formUpdateComment">Update comment</label>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" mdbBtn color="secondary" class="waves-light" aria-label="Close" (click)="toggleUpdateCommentModal(UpdateCommentModal,comment, false)" mdbWavesEffect>Close</button>
+            <button type="button" mdbBtn color="primary" class="relative waves-light" (click)="updateComment(UpdateCommentModal, comment)" [disabled]="!noteToUpdate.length > 0"  mdbWavesEffect>Update</button>
           </div>
         </div>
       </div>

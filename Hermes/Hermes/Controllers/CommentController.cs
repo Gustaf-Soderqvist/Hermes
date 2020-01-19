@@ -24,8 +24,8 @@ namespace Hermes.Controllers
         private readonly IDataRepository<Comment> _repo;
         private readonly IHubContext<BroadcastHub, IHubClient> _hubContext;
 
-        public CommentController(ApplicationDbContext context, UserManager<ApplicationUser> userManager, 
-            IDataRepository<Comment> repo, 
+        public CommentController(ApplicationDbContext context, UserManager<ApplicationUser> userManager,
+            IDataRepository<Comment> repo,
             IHubContext<BroadcastHub, IHubClient> hubContext)
         {
             _context = context;
@@ -39,7 +39,7 @@ namespace Hermes.Controllers
         {
 
             var result = _context.Comments.Include(c => c.Likes).OrderByDescending(r => r.CreatedDate).ToList();
-            
+
             return result;
         }
 
@@ -62,7 +62,7 @@ namespace Hermes.Controllers
 
         // DELETE: api/Comment/5
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteCommentPost([FromRoute] int id)
+        public async Task<IActionResult> DeleteComment([FromRoute] int id)
         {
             if (!ModelState.IsValid)
             {
@@ -76,7 +76,8 @@ namespace Hermes.Controllers
             }
 
             _repo.Delete(comment);
-            var save = await _repo.SaveAsync(comment);
+            await _repo.SaveAsync(comment);
+            await _hubContext.Clients.All.BroadcastDelete();
 
             return Ok(comment);
         }
@@ -101,6 +102,7 @@ namespace Hermes.Controllers
             {
                 _repo.Update(comment);
                 var save = await _repo.SaveAsync(comment);
+                await _hubContext.Clients.All.BroadcastUpdate();
             }
             catch (DbUpdateConcurrencyException)
             {
@@ -122,7 +124,7 @@ namespace Hermes.Controllers
         [Route("test")]
         public IActionResult Test()
         {
-            return Ok("Hello");
+            return Ok("Hello world");
         }
 
         private bool CommentExists(int id)
