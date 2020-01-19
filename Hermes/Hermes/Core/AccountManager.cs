@@ -16,6 +16,7 @@ namespace Hermes.Core
         public AccountManager(ApplicationDbContext context, UserManager<ApplicationUser> userManager)
         {
             _context = context;
+            _userManager = userManager;
 
         }
 
