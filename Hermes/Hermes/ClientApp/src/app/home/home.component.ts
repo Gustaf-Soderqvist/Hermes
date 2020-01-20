@@ -1,8 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthorizeService } from "../../api-authorization/authorize.service";
 
-//import * as signalR from "@microsoft/signalr";
-
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
