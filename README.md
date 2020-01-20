@@ -10,14 +10,18 @@ These instructions will get you a copy of the project up and running on your loc
 
 A step by step series how to get a development env running
 
-Run npm install
 
+Clone or download the project 
+```
+https://github.com/Gustaf-Soderqvist/Hermes.git
+```
+
+Run npm install
 ```
 npm install
 ```
 
 Build
-
 ```
 Build soultion
 ```
