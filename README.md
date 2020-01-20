@@ -57,8 +57,3 @@ http://localhost:5000
 ## Authors
 
 * **Gustaf Söderqvist** - *Software developer* - https://github.com/Gustaf-Soderqvist
-
-
-## License
-
-This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details
