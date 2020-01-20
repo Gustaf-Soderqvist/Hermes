@@ -28,12 +28,17 @@ Build soultion
 
 - Create DB -
 ```
+
 In Visual Studio, you can use the Package Manager Console to apply pending migrations to the database:
 
 Run "Update-Database"
 Alternatively, you can apply pending migrations from a command prompt at your project directory:
 
 > dotnet ef database update
+
+
+* If you have problem with creating the DB. Change cs in appsettings.json to:
+connectionString="Server=(localdb)\mssqllocaldb;Database=Hermes;Trusted_Connection=True;" />
 ```
 
 - Start the application -
